@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>我的订单 - 在线商城</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .orders-container { max-width:1000px; margin:24px auto; background:#fff; padding:20px; border-radius:6px; }
+    .orders-table { width:100%; border-collapse:collapse; }
+    .orders-table th, .orders-table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
+    .order-items { background:#fafafa; padding:12px; margin-top:8px; border-radius:4px; }
+    .btn-small { padding:6px 10px; border-radius:4px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container top-inner">
+      <div class="logo"><a href="/">在线商城</a></div>
+      <nav class="user-actions">
+        <a href="/orders.html">我的订单</a>
+        <a href="#">购物车</a>
+        <a href="#">登录</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="orders-container">
+    <h1>我的订单</h1>
+    <p>在此查看你的历史订单和订单状态。</p>
+
+    <table class="orders-table" id="ordersTable">
+      <thead>
+        <tr>
+          <th>订单号</th>
+          <th>下单时间</th>
+          <th>状态</th>
+          <th>金额</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- orders rendered here -->
+      </tbody>
+    </table>
+
+    <div id="noOrders" style="display:none; margin-top:16px;">你还没有订单。</div>
+  </main>
+
+  <script src="js/orders.js"></script>
+</body>
+</html>
