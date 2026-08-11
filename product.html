@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>商品详情</title>
+  <link rel="stylesheet" href="/assets/css/product.css" />
+</head>
+<body>
+  <header>
+    <a href="/">首页</a> › <a href="/#recommend">为你推荐</a> › <span id="breadcrumb-title">商品详情</span>
+  </header>
+
+  <main class="product-container">
+    <div class="product-image">
+      <img id="product-image" src="" alt="商品图片" />
+    </div>
+
+    <div class="product-info">
+      <h1 id="product-title">加载中…</h1>
+      <div id="product-price" class="price"></div>
+      <p id="product-short" class="short"></p>
+
+      <div class="actions">
+        <button id="add-to-cart" class="btn primary">加入购物车</button>
+        <button id="buy-now" class="btn">立即购买</button>
+      </div>
+
+      <section class="product-desc" id="product-desc"></section>
+
+      <div class="related" id="related">
+        <h3>相关推荐</h3>
+        <div id="related-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 简单工具：从 URL 获取参数
+    function getQueryParam(name) {
+      const params = new URLSearchParams(location.search);
+      return params.get(name);
+    }
+
+    // 渲染相关商品（只简单列图+标题）
+    function renderRelated(allProducts, currentId) {
+      const container = document.getElementById('related-list');
+      container.innerHTML = '';
+      const related = allProducts.filter(p => p.id !== currentId).slice(0,4);
+      related.forEach(p => {
+        const a = document.createElement('a');
+        a.href = '/product.html?id=' + p.id;
+        a.className = 'related-item';
+        a.innerHTML = `<img src="${p.image}" alt="${p.title}"><div class="r-title">${p.title}</div>`;
+        container.appendChild(a);
+      });
+    }
+
+    // 购物车操作（基于 localStorage）
+    function addToCart(product) {
+      const key = 'cart_v1';
+      const raw = localStorage.getItem(key);
+      const cart = raw ? JSON.parse(raw) : [];
+      const existing = cart.find(i => i.id === product.id);
+      if (existing) existing.qty += 1;
+      else cart.push({ id: product.id, title: product.title, price: product.price, qty: 1, image: product.image });
+      localStorage.setItem(key, JSON.stringify(cart));
+      alert('已加入购物车：' + product.title);
+    }
+
+    async function init() {
+      const idStr = getQueryParam('id');
+      if (!idStr) {
+        document.getElementById('product-title').textContent = '商品未指定';
+        return;
+      }
+      const id = parseInt(idStr, 10);
+      try {
+        const res = await fetch('/products.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('无法加载产品数据');
+        const products = await res.json();
+        const product = products.find(p => p.id === id);
+        if (!product) {
+          document.getElementById('product-title').textContent = '未找到该商品';
+          return;
+        }
+
+        // 填充页面
+        document.getElementById('product-image').src = product.image;
+        document.getElementById('product-image').alt = product.title;
+        document.getElementById('product-title').textContent = product.title;
+        document.getElementById('breadcrumb-title').textContent = product.title;
+        document.getElementById('product-price').innerHTML = `<span class="currency">${product.currency}</span><span class="value">${product.price.toFixed(2)}</span>`;
+        document.getElementById('product-short').textContent = product.short || '';
+        document.getElementById('product-desc').innerHTML = product.description || '';
+
+        // 绑定加入购物车
+        document.getElementById('add-to-cart').addEventListener('click', () => addToCart(product));
+        document.getElementById('buy-now').addEventListener('click', () => {
+          addToCart(product);
+          location.href = '/cart.html'; // 假设有购物车页面
+        });
+
+        // 渲染相关推荐
+        renderRelated(products, id);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('product-title').textContent = '加载数据失败';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

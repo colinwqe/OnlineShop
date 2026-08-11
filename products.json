@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "示例商品 1 - 热销",
+    "price": 135.28,
+    "currency": "¥",
+    "image": "/assets/images/product1.jpg",
+    "short": "短描述：漂亮的复古自行车",
+    "description": "<p>这是更完整的商品描述，包括规格、材质、维护说明等。</p><ul><li>规格：32cm</li><li>重量：4kg</li></ul>",
+    "tags": ["热销","自行车"]
+  },
+  {
+    "id": 2,
+    "title": "示例商品 2 - 热销",
+    "price": 378.30,
+    "currency": "¥",
+    "image": "/assets/images/product2.jpg",
+    "short": "短描述：工业风建筑模型",
+    "description": "<p>示例商品 2 的详细描述。</p>",
+    "tags": ["热销","模型"]
+  },
+  {
+    "id": 3,
+    "title": "示例商品 3 - 热销",
+    "price": 847.02,
+    "currency": "¥",
+    "image": "/assets/images/product3.jpg",
+    "short": "短描述：海边风景画",
+    "description": "<p>示例商品 3 的详细描述。</p>",
+    "tags": ["热销","艺术"]
+  }
+]
