@@ -2,7 +2,7 @@
 
 async function loadOrders() {
   try {
-    const resp = await fetch('/orders.json', { cache: 'no-store' });
+    const resp = await fetch('orders.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('no-json');
     const orders = await resp.json();
     return orders;

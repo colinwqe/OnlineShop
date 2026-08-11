@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>商品详情</title>
-  <link rel="stylesheet" href="/assets/css/product.css" />
+  <link rel="stylesheet" href="assets/css/product.css" />
 </head>
 <body>
   <header>
-    <a href="/">首页</a> › <a href="/#recommend">为你推荐</a> › <span id="breadcrumb-title">商品详情</span>
+    <a href="index.html">首页</a> › <a href="index.html#recommend">为你推荐</a> › <span id="breadcrumb-title">商品详情</span>
   </header>
 
   <main class="product-container">
@@ -49,7 +49,7 @@
       const related = allProducts.filter(p => p.id !== currentId).slice(0,4);
       related.forEach(p => {
         const a = document.createElement('a');
-        a.href = '/product.html?id=' + p.id;
+        a.href = 'product.html?id=' + p.id;
         a.className = 'related-item';
         a.innerHTML = `<img src="${p.image}" alt="${p.title}"><div class="r-title">${p.title}</div>`;
         container.appendChild(a);
@@ -76,7 +76,7 @@
       }
       const id = parseInt(idStr, 10);
       try {
-        const res = await fetch('/products.json', { cache: 'no-store' });
+        const res = await fetch('products.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('无法加载产品数据');
         const products = await res.json();
         const product = products.find(p => p.id === id);
@@ -98,7 +98,7 @@
         document.getElementById('add-to-cart').addEventListener('click', () => addToCart(product));
         document.getElementById('buy-now').addEventListener('click', () => {
           addToCart(product);
-          location.href = '/cart.html'; // 假设有购物车页面
+          location.href = 'cart.html'; // 假设有购物车页面
         });
 
         // 渲染相关推荐
