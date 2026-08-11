@@ -1,31 +1,29 @@
-name: Deploy static site to GitHub Pages
+name: Deploy to GitHub Pages (push to gh-pages)
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  upload:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Upload Pages artifact
-        # 使用 upload-pages-artifact 的较新版本以避免依赖已弃用的 upload-artifact v3
-        uses: actions/upload-pages-artifact@v2
         with:
-          path: '.'
+          fetch-depth: 0
+          persist-credentials: false
 
-  deploy:
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+      # 如果你需要 build（例如 npm run build），在这里加 build 步骤并把 publish_dir 指向输出目录（例如 ./dist）
+      # - name: Build site
+      #   run: |
+      #     npm ci
+      #     npm run build
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./    # 如果你的站点实际在 ./dist 或 ./public，改成对应目录
+          # 可选：target_branch: gh-pages   # 默认是 gh-pages
